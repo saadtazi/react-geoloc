@@ -63,10 +63,10 @@ function Test() {
 
 ## Props
 
-* `error`: null || `[PositionError](https://developer.mozilla.org/en-US/docs/Web/API/PositionError)` (`{code: number, message: string}`)
-* `isFetching`: boolean. Wether or not the position is being fetched
-* `position`: a [Position](https://developer.mozilla.org/en-US/docs/Web/API/Position) object
-* `fetchLocation`: a function that takes an optional `[PositionOptions](https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions)`
+* `error`: null || [`PositionError`](https://developer.mozilla.org/en-US/docs/Web/API/PositionError) (`{code: number, message: string}`)
+* `isFetching`: boolean. Wether or not the position is currently being fetched
+* `position`: a [`Position`](https://developer.mozilla.org/en-US/docs/Web/API/Position) object
+* `fetchLocation`: a function that takes an optional [`PositionOptions`](https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions)
 
 ## License
 
