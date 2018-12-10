@@ -1,4 +1,4 @@
-import LocationProvider from '.'
+import LocationProvider from './index'
 
 describe('LocationProvider', () => {
   it('is truthy', () => {

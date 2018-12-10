@@ -7,7 +7,8 @@ export default class App extends Component {
   render () {
     return (
       <div>
-        <p>Code <a href="https://github.com/saadtazi/rect-geoloc">here</a></p>
+        <p>Code <a href="https://github.com/saadtazi/react-geoloc">here</a>.
+        Example <a href="https://github.com/saadtazi/react-geoloc/blob/master/example/src/App.js">here</a></p>
         <LocationProvider lazy={true} watch={false}>
         <Test/>
         </LocationProvider>
