@@ -1,46 +1,48 @@
-import React, { Component, useContext } from 'react'
+import React, { Component, useContext } from "react";
 
 // import LocationProvider, {LocationContext} from 'react-geoloc/dist/index.js';
-import LocationProvider, {LocationContext} from 'react-geoloc/dist/index.js';
+import LocationProvider, { LocationContext } from "react-geoloc/dist/index.js";
 
 export default class App extends Component {
-  render () {
+  render() {
     return (
       <div>
-        <p>Code <a href="https://github.com/saadtazi/react-geoloc">here</a>.
-        Example <a href="https://github.com/saadtazi/react-geoloc/blob/master/example/src/App.js">here</a></p>
+        <p>
+          Code <a href="https://github.com/saadtazi/react-geoloc">here</a>.
+          Example{" "}
+          <a href="https://github.com/saadtazi/react-geoloc/blob/master/example/src/App.js">
+            here
+          </a>
+        </p>
         <LocationProvider lazy={true} watch={false}>
-        <Test/>
+          <Test />
         </LocationProvider>
       </div>
-    )
+    );
   }
 }
 
 function Test() {
-  const {
-    error,
-    isFetching,
-    position,
-    fetchLocation
-  } = useContext(LocationContext);
+  const { error, isFetching, position, fetchLocation } = useContext(
+    LocationContext
+  );
   // useEffect(() => { fetchLocation()}, [])
   // fetchLocation();
-  error.message && alert(error.message)
-  const {latitude, longitude, altitude} = position && (position.coords || {});
+  error.message && alert(error.message);
+  const { latitude, longitude, altitude } = position && (position.coords || {});
   return (
     <div>
       <pre>latitude: {latitude}</pre>
-      <hr/>
+      <hr />
       <pre>longitude: {longitude}</pre>
-      <hr/>
+      <hr />
       <pre>altitude: {altitude}</pre>
-      <hr/>
+      <hr />
       <pre>isFetching: {JSON.stringify(isFetching)}</pre>
-      <hr/>
+      <hr />
       <pre>{error.message}</pre>
-      <hr/>
+      <hr />
       <button onClick={fetchLocation}>Find me!</button>
-      </div>
+    </div>
   );
 }
