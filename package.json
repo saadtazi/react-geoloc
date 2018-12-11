@@ -5,6 +5,7 @@
   "author": "saadtazi",
   "license": "MIT",
   "repository": "saadtazi/react-geoloc",
+  "homepage": "https://saadtazi.github.io/react-geoloc",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
@@ -23,7 +24,7 @@
   },
   "dependencies": {},
   "peerDependencies": {
-    "prop-types": "^15.5.4",
+    "prop-types": "^15.6.2",
     "react": "16.7.0-alpha.2",
     "react-dom": "16.7.0-alpha.2"
   },
@@ -36,7 +37,7 @@
     "babel-core": "^6.26.3",
     "babel-runtime": "^6.26.0",
     "cross-env": "^5.1.4",
-    "gh-pages": "^1.2.0",
+    "gh-pages": "^2.0.1",
     "microbundle": "^0.8.3",
     "react": "^16.7.0-alpha.2",
     "react-dom": "^16.7.0-alpha.2",

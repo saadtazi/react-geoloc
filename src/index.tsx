@@ -5,13 +5,13 @@ interface LocationContextStoreInterface {
   error?: any
   isFetching: boolean
   position?: Position
-  fetchLocation?: Function
+  fetchLocation: Function
 }
 
 interface LocationProviderProps {
   lazy: boolean,
   watch: boolean,
-  options: PositionOptions,
+  options?: PositionOptions,
   children: React.ReactNodeArray
 }
 
@@ -20,10 +20,14 @@ interface PositionErrorInterface {
   message: string
 }
 
-export const LocationContext = createContext<LocationContextStoreInterface>({isFetching: false})
+export const LocationContext = createContext<LocationContextStoreInterface>({
+  isFetching: false,
+  fetchLocation: () => {}
+})
 
 const LocationProvider: React.FunctionComponent<LocationProviderProps> = ({lazy = true, watch = false, options = {}, children}:LocationProviderProps) => {
   function fetchLocation(opts : PositionOptions) {
+    setError(false)
     setIsFetching(true);
     navigator.geolocation.getCurrentPosition(
       handlePosition,
@@ -39,6 +43,7 @@ const LocationProvider: React.FunctionComponent<LocationProviderProps> = ({lazy 
     setError({code: 99, message: "Geolocation not available"});
   }
   function handlePosition(pos: Position) {
+    setError(false);
     setIsFetching(false);
     setPosition(pos);
   }

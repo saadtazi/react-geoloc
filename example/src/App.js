@@ -26,6 +26,7 @@ function Test() {
   } = useContext(LocationContext);
   // useEffect(() => { fetchLocation()}, [])
   // fetchLocation();
+  error.message && alert(error.message)
   const {latitude, longitude, altitude} = position && (position.coords || {});
   return (
     <div>
@@ -37,7 +38,7 @@ function Test() {
       <hr/>
       <pre>isFetching: {JSON.stringify(isFetching)}</pre>
       <hr/>
-      <pre>{JSON.stringify(error)}</pre>
+      <pre>{error.message}</pre>
       <hr/>
       <button onClick={fetchLocation}>Find me!</button>
       </div>
