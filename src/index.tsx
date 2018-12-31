@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 
 interface LocationContextStoreInterface {
   error?: any;
@@ -23,6 +23,10 @@ export const LocationContext = createContext<LocationContextStoreInterface>({
   isFetching: false,
   fetchLocation: () => {}
 });
+
+export const useLocationContext = () => {
+  return useContext(LocationContext);
+};
 
 const LocationProvider: React.FunctionComponent<LocationProviderProps> = ({
   lazy = true,

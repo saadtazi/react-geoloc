@@ -5,6 +5,8 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^3.8.1",
+    "@material-ui/styles": "^3.0.0-alpha.6",
     "prop-types": "^15.6.2",
     "react-geoloc": "link:..",
     "react-scripts": "^2.1.1"
