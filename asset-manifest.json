@@ -1,13 +1,11 @@
 {
-  "main.css": "/react-geoloc/static/css/main.5f31fdb1.chunk.css",
-  "main.js": "/react-geoloc/static/js/main.f3904aec.chunk.js",
-  "main.js.map": "/react-geoloc/static/js/main.f3904aec.chunk.js.map",
-  "static/js/1.ff7955ba.chunk.js": "/react-geoloc/static/js/1.ff7955ba.chunk.js",
-  "static/js/1.ff7955ba.chunk.js.map": "/react-geoloc/static/js/1.ff7955ba.chunk.js.map",
+  "main.js": "/react-geoloc/static/js/main.73d9d5a0.chunk.js",
+  "main.js.map": "/react-geoloc/static/js/main.73d9d5a0.chunk.js.map",
+  "static/js/1.1d955fb1.chunk.js": "/react-geoloc/static/js/1.1d955fb1.chunk.js",
+  "static/js/1.1d955fb1.chunk.js.map": "/react-geoloc/static/js/1.1d955fb1.chunk.js.map",
   "runtime~main.js": "/react-geoloc/static/js/runtime~main.1b86b529.js",
   "runtime~main.js.map": "/react-geoloc/static/js/runtime~main.1b86b529.js.map",
-  "static/css/main.5f31fdb1.chunk.css.map": "/react-geoloc/static/css/main.5f31fdb1.chunk.css.map",
   "index.html": "/react-geoloc/index.html",
-  "precache-manifest.c1c62f894fd60da3d0e54e137fae4897.js": "/react-geoloc/precache-manifest.c1c62f894fd60da3d0e54e137fae4897.js",
+  "precache-manifest.dbc024a625e0478da0bfd38b12614c3b.js": "/react-geoloc/precache-manifest.dbc024a625e0478da0bfd38b12614c3b.js",
   "service-worker.js": "/react-geoloc/service-worker.js"
 }

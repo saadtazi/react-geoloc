@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/react-geoloc/precache-manifest.c1c62f894fd60da3d0e54e137fae4897.js"
+  "/react-geoloc/precache-manifest.dbc024a625e0478da0bfd38b12614c3b.js"
 );
 
 workbox.clientsClaim();
