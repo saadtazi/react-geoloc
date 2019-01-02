@@ -1,6 +1,6 @@
 // useEffect needed to retrieve location "immediately" (see below)
 // import React, { Component, useEffect } from "react";
-import React from "react";
+import React, { useEffect } from "react";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 
@@ -137,8 +137,14 @@ function Page() {
 
 function MyTestComponent() {
   const { error, isFetching, position, fetchLocation } = useLocationContext();
-
-  error.message && alert(error.message);
+  useEffect(
+    () => {
+      if (error.message) {
+        alert(error.message);
+      }
+    },
+    [error]
+  );
   const { latitude, longitude, altitude } = position && (position.coords || {});
   return (
     <React.Fragment>

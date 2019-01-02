@@ -8,8 +8,8 @@ interface LocationContextStoreInterface {
 }
 
 interface LocationProviderProps {
-  lazy: boolean;
-  watch: boolean;
+  lazy?: boolean;
+  watch?: boolean;
   options?: PositionOptions;
   children: React.ReactNode;
 }
@@ -58,6 +58,7 @@ const LocationProvider: React.FunctionComponent<LocationProviderProps> = ({
     setPosition(pos);
   }
   function handleError(err: PositionErrorInterface) {
+    setIsFetching(false);
     setError(err);
   }
 

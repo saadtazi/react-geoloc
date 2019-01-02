@@ -1,13 +1,16 @@
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  rootDir: 'src',
-  "transform": {
+  preset: "ts-jest",
+  verbose: true,
+  testEnvironment: "jsdom",
+  rootDir: "src",
+  transform: {
     "^.+\\.(ts|tsx)$": "ts-jest"
   },
-  "globals": {
+  globals: {
     "ts-jest": {
-      "tsConfig": "tsconfig.test.json"
+      tsConfig: "tsconfig.test.json"
     }
   },
+
+  setupTestFrameworkScriptFile: "<rootDir>/setupTests.ts"
 };

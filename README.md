@@ -2,7 +2,8 @@
 
 > React Geolocation with Hooks
 
-[![NPM](https://img.shields.io/npm/v/react-geoloc.svg)](https://www.npmjs.com/package/react-geoloc) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/react-geoloc.svg)](https://www.npmjs.com/package/react-geoloc)
+[![Build Status](https://travis-ci.org/saadtazi/react-geoloc.svg?branch=master)](https://travis-ci.org/saadtazi/react-geoloc)
 
 > **Note:** This is using the new [React Hooks API Proposal](https://reactjs.org/docs/hooks-intro.html)
 > which is subject to change until React 16.7 final.
