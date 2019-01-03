@@ -1,5 +1,3 @@
-// useEffect needed to retrieve location "immediately" (see below)
-// import React, { Component, useEffect } from "react";
 import React, { useState, useEffect } from "react";
 
 import CssBaseline from "@material-ui/core/CssBaseline";

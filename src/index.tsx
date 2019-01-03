@@ -42,6 +42,7 @@ const LocationProvider: React.FunctionComponent<LocationProviderProps> = ({
   children
 }: LocationProviderProps) => {
   const [watchId, setWatchId] = useState(-1);
+
   function fetchLocation(opts: PositionOptions) {
     setError(false);
     setIsFetching(true);
@@ -51,9 +52,10 @@ const LocationProvider: React.FunctionComponent<LocationProviderProps> = ({
       opts || options
     );
   }
+
   function doWatch(opts: PositionOptions) {
     if (watchId !== -1) {
-      return watchId;
+      return;
     }
     setError(false);
     const id = navigator.geolocation.watchPosition(
@@ -62,14 +64,20 @@ const LocationProvider: React.FunctionComponent<LocationProviderProps> = ({
       opts || options
     );
     setWatchId(id);
-    return id;
+    return;
   }
-  function stopWatching() {
-    if (watchId) {
-      setWatchId(-1);
+
+  function clearWatch() {
+    if (watchId !== -1) {
       navigator.geolocation.clearWatch(watchId);
     }
   }
+
+  function stopWatching() {
+    setWatchId(-1);
+    clearWatch();
+  }
+
   const [isFetching, setIsFetching] = useState(false);
   const [position, setPosition] = useState<any>({});
   const [error, setError] = useState<
@@ -95,16 +103,18 @@ const LocationProvider: React.FunctionComponent<LocationProviderProps> = ({
       setIsFetching(true);
       fetchLocation(options);
     }
-  }, []);
-
-  // at init only
-  useEffect(function() {
     if (watch) {
       doWatch(options);
-      return stopWatching;
     }
-    return;
   }, []);
+
+  // return a new cleanup function when watchId is updated
+  useEffect(
+    function() {
+      return clearWatch;
+    },
+    [watchId]
+  );
 
   const store: LocationContextStoreInterface = {
     error,
