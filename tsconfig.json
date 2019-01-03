@@ -32,6 +32,7 @@
     "example",
     "src/**/*.test.tsx",
     "src/**/*.test.ts",
+    "src/setupTests.ts",
     "rollup.config.js"
   ]
 }

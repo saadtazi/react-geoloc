@@ -1,6 +1,6 @@
 // useEffect needed to retrieve location "immediately" (see below)
 // import React, { Component, useEffect } from "react";
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 
@@ -9,9 +9,8 @@ import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Divider from "@material-ui/core/Divider";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -22,6 +21,8 @@ import LocationProvider, {
   useLocationContext
 } from "react-geoloc/dist/index.js";
 
+import LocationInfo from "./LocationInfo";
+
 import githubImg from "./github.png";
 
 const theme = createMuiTheme({
@@ -31,6 +32,7 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles(theme => {
+  console.log(theme.palette);
   return {
     githubIcon: {
       width: 30
@@ -47,6 +49,12 @@ const useStyles = makeStyles(theme => {
       borderRadius: 10,
       textAlign: "center",
       color: theme.palette.primary.contrastText
+    },
+    exampleTabs: {
+      backgroundColor: theme.palette.grey["100"]
+    },
+    exampleTitle: {
+      marginTop: 20
     }
   };
 });
@@ -62,6 +70,7 @@ export default function App() {
 
 function Page() {
   const classes = useStyles();
+  const [tab, setTab] = useState("fetch");
   return (
     <>
       <AppBar position="static" color="default">
@@ -105,26 +114,60 @@ function Page() {
                 </a>
                 .
               </li>
-              <li>You can decide when you request/fetch user location</li>
+              <li>
+                You can decide when you request/fetch user location, on mount
+                through the <code>lazy</code> prop or on demand using the{" "}
+                <code>fetchLocation()</code>
+                context attribute
+              </li>
+              <li>You can watch the location</li>
+              <li>
+                You can decide when you start and stop watching, through the{" "}
+                <code>watch</code> prop or <code>watchPosition</code> and{" "}
+                <code>stopWatching</code> context attribute.
+              </li>
               <li>
                 you can specify any{" "}
                 <a href="https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions">
                   Geolocation API options
                 </a>
-                , like <code>enablehighAccuracy</code> or <code>timeout</code>.
+                , like <code>enableHighAccuracy</code> or <code>timeout</code>.
               </li>
             </ul>
           </Typography>
-          <Typography variant="h4">Example</Typography>
-          {/* REAL EXAMPLE */}
-          <LocationProvider lazy={true} watch={false}>
-            <MyTestComponent />
-          </LocationProvider>
-          {/* END REAL EXAMPLE */}
-
+        </CardContent>
+      </Card>
+      <Toolbar className={classes.exampleTabs}>
+        <Tabs value={tab} onChange={(e, v) => setTab(v)}>
+          <Tab value="fetch" label="Fetch Location Example" />
+          <Tab value="watch" label="Fetch Location Example" />
+        </Tabs>
+      </Toolbar>
+      <Card>
+        <CardContent>
+          {tab === "fetch" && (
+            <React.Fragment>
+              <Typography variant="h4" className={classes.exampleTitle}>
+                Fetch Location Example
+              </Typography>
+              <LocationProvider lazy={true} watch={false}>
+                <FetchLocationComponent />
+              </LocationProvider>
+            </React.Fragment>
+          )}
+          {tab === "watch" && (
+            <React.Fragment>
+              <Typography variant="h4" className={classes.exampleTitle}>
+                Watch Location Example
+              </Typography>
+              <LocationProvider lazy={true} watch={false}>
+                <WatchLocationComponent />
+              </LocationProvider>
+            </React.Fragment>
+          )}
           <Typography style={{ marginTop: 30 }} component="div">
             <Divider />
-            Code used in the example can be found{" "}
+            Code used in the examples can be found{" "}
             <a href="https://github.com/saadtazi/react-geoloc/blob/master/example/src/App.js">
               here
             </a>
@@ -135,8 +178,14 @@ function Page() {
   );
 }
 
-function MyTestComponent() {
-  const { error, isFetching, position, fetchLocation } = useLocationContext();
+function FetchLocationComponent() {
+  const {
+    error,
+    isFetching,
+    position,
+    fetchLocation,
+    isWatching
+  } = useLocationContext();
   useEffect(
     () => {
       if (error.message) {
@@ -145,36 +194,67 @@ function MyTestComponent() {
     },
     [error]
   );
-  const { latitude, longitude, altitude } = position && (position.coords || {});
   return (
     <React.Fragment>
-      <List>
-        <ListItem>
-          <ListItemText primary="Latitude" secondary={latitude || "N/A"} />
-        </ListItem>
-        <Divider />
-        <ListItem>
-          <ListItemText primary="Longitude" secondary={longitude || "N/A"} />
-        </ListItem>
-        <Divider />
-        <ListItem>
-          <ListItemText primary="Altitude" secondary={altitude || "N/A"} />
-        </ListItem>
-        <Divider />
-        <ListItem>
-          <ListItemText
-            primary="isFetching?"
-            secondary={JSON.stringify(isFetching)}
-          />
-        </ListItem>
-        <Divider />
-        <ListItem>
-          <ListItemText primary="Error?" secondary={error.message || "None"} />
-        </ListItem>
-      </List>
       <Button color="default" onClick={() => fetchLocation()}>
         Geolocate me!
       </Button>
+      <LocationInfo
+        position={position}
+        error={error}
+        isFetching={isFetching}
+        isWatching={isWatching}
+      />
+    </React.Fragment>
+  );
+}
+
+function WatchLocationComponent() {
+  const {
+    error,
+    isFetching,
+    position,
+    watchLocation,
+    stopWatching,
+    isWatching
+  } = useLocationContext();
+  // only to verify that a new position is receveid when the device is moving
+  useEffect(
+    () => {
+      console.log("location received", position);
+    },
+    [position]
+  );
+  useEffect(
+    () => {
+      if (error.message) {
+        alert(error.message);
+      }
+    },
+    [error]
+  );
+  return (
+    <React.Fragment>
+      <Button
+        color="default"
+        onClick={() => watchLocation()}
+        disabled={isWatching}
+      >
+        Watch my location!
+      </Button>
+      <Button
+        color="default"
+        onClick={() => stopWatching()}
+        disabled={!isWatching}
+      >
+        Stop watching
+      </Button>
+      <LocationInfo
+        position={position}
+        error={error}
+        isFetching={isFetching}
+        isWatching={isWatching}
+      />
     </React.Fragment>
   );
 }

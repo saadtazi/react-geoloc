@@ -1,10 +1,14 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
+import PropTypes from "prop-types";
 
-interface LocationContextStoreInterface {
-  error?: any;
+export interface LocationContextStoreInterface {
+  error?: PositionError | PositionErrorInterface | false;
   isFetching: boolean;
   position?: Position;
   fetchLocation: Function;
+  isWatching: boolean;
+  watchLocation: Function;
+  stopWatching: Function;
 }
 
 interface LocationProviderProps {
@@ -21,7 +25,10 @@ interface PositionErrorInterface {
 
 export const LocationContext = createContext<LocationContextStoreInterface>({
   isFetching: false,
-  fetchLocation: () => {}
+  isWatching: false,
+  fetchLocation: () => {},
+  watchLocation: () => {},
+  stopWatching: () => {}
 });
 
 export const useLocationContext = () => {
@@ -34,6 +41,7 @@ const LocationProvider: React.FunctionComponent<LocationProviderProps> = ({
   options = {},
   children
 }: LocationProviderProps) => {
+  const [watchId, setWatchId] = useState(-1);
   function fetchLocation(opts: PositionOptions) {
     setError(false);
     setIsFetching(true);
@@ -43,10 +51,29 @@ const LocationProvider: React.FunctionComponent<LocationProviderProps> = ({
       opts || options
     );
   }
+  function doWatch(opts: PositionOptions) {
+    if (watchId !== -1) {
+      return watchId;
+    }
+    setError(false);
+    const id = navigator.geolocation.watchPosition(
+      handlePosition,
+      handleError,
+      opts || options
+    );
+    setWatchId(id);
+    return id;
+  }
+  function stopWatching() {
+    if (watchId) {
+      setWatchId(-1);
+      navigator.geolocation.clearWatch(watchId);
+    }
+  }
   const [isFetching, setIsFetching] = useState(false);
   const [position, setPosition] = useState<any>({});
   const [error, setError] = useState<
-    boolean | PositionError | PositionErrorInterface
+    false | PositionError | PositionErrorInterface
   >(false);
 
   if (!("geolocation" in navigator)) {
@@ -73,14 +100,8 @@ const LocationProvider: React.FunctionComponent<LocationProviderProps> = ({
   // at init only
   useEffect(function() {
     if (watch) {
-      const id = navigator.geolocation.watchPosition(
-        handlePosition,
-        handleError,
-        options
-      );
-      return function() {
-        navigator.geolocation.clearWatch(id);
-      };
+      doWatch(options);
+      return stopWatching;
     }
     return;
   }, []);
@@ -89,13 +110,36 @@ const LocationProvider: React.FunctionComponent<LocationProviderProps> = ({
     error,
     isFetching,
     position,
-    fetchLocation
+    fetchLocation,
+    isWatching: watchId != -1,
+    watchLocation: doWatch,
+    stopWatching
   };
   return (
     <LocationContext.Provider value={store}>
       {children}
     </LocationContext.Provider>
   );
+};
+
+LocationProvider.propTypes = {
+  lazy: PropTypes.bool.isRequired,
+  watch: PropTypes.bool.isRequired,
+  options: PropTypes.shape({
+    enableHighAccuracy: PropTypes.bool.isRequired,
+    maximumAge: PropTypes.number.isRequired,
+    timeout: PropTypes.number.isRequired
+  }).isRequired
+};
+
+LocationProvider.defaultProps = {
+  lazy: true,
+  watch: false,
+  options: {
+    enableHighAccuracy: false,
+    timeout: Infinity,
+    maximumAge: 0
+  }
 };
 
 export default LocationProvider;
